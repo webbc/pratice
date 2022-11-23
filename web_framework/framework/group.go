@@ -1,17 +1,19 @@
 package framework
 
 type IGroup interface {
-	Get(string, Controller)
-	Post(string, Controller)
-	Put(string, Controller)
-	Delete(string, Controller)
+	Get(string, ...Controller)
+	Post(string, ...Controller)
+	Put(string, ...Controller)
+	Delete(string, ...Controller)
 	Group(string) IGroup
+	Use(...Controller) IGroup
 }
 
 type Group struct {
-	prefix string
-	core   *Core
-	parent *Group
+	prefix      string
+	core        *Core
+	parent      *Group
+	middlewares []Controller // 组中间件
 }
 
 func NewGroup(prefix string, core *Core) *Group {
@@ -21,30 +23,46 @@ func NewGroup(prefix string, core *Core) *Group {
 	}
 }
 
-func (g *Group) Get(router string, controller Controller) {
+func (g *Group) Get(router string, controller ...Controller) {
 	router = g.getAbsolutePrefix() + router
-	g.core.Get(router, controller)
+	controllers := append(g.GetAllMiddlewares(), controller...)
+	g.core.Get(router, controllers...)
 }
 
-func (g *Group) Post(router string, controller Controller) {
+func (g *Group) Post(router string, controller ...Controller) {
 	router = g.getAbsolutePrefix() + router
-	g.core.Post(router, controller)
+	controllers := append(g.GetAllMiddlewares(), controller...)
+	g.core.Post(router, controllers...)
 }
 
-func (g *Group) Put(router string, controller Controller) {
+func (g *Group) Put(router string, controller ...Controller) {
 	router = g.getAbsolutePrefix() + router
-	g.core.Put(router, controller)
+	controllers := append(g.GetAllMiddlewares(), controller...)
+	g.core.Put(router, controllers...)
 }
 
-func (g *Group) Delete(router string, controller Controller) {
+func (g *Group) Delete(router string, controller ...Controller) {
 	router = g.getAbsolutePrefix() + router
-	g.core.Delete(router, controller)
+	controllers := append(g.GetAllMiddlewares(), controller...)
+	g.core.Delete(router, controllers...)
 }
 
 func (g *Group) Group(prefix string) IGroup {
 	group := NewGroup(prefix, g.core)
 	group.parent = g
 	return group
+}
+
+func (g *Group) Use(middleware ...Controller) IGroup {
+	g.middlewares = append(g.middlewares, middleware...)
+	return g
+}
+
+func (g *Group) GetAllMiddlewares() []Controller {
+	if g.parent == nil {
+		return g.middlewares
+	}
+	return append(g.parent.GetAllMiddlewares(), g.middlewares...)
 }
 
 // 获取当前group的绝对路径

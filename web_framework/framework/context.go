@@ -9,9 +9,11 @@ import (
 )
 
 type Context struct {
-	writer http.ResponseWriter
-	req    *http.Request
-	ctx    context.Context
+	writer      http.ResponseWriter
+	req         *http.Request
+	ctx         context.Context
+	controllers []Controller // controllers
+	index       int          // 当前处理到了那个handler
 }
 
 func NewContext(writer http.ResponseWriter, req *http.Request) *Context {
@@ -19,6 +21,7 @@ func NewContext(writer http.ResponseWriter, req *http.Request) *Context {
 		writer: writer,
 		req:    req,
 		ctx:    req.Context(),
+		index:  -1, // 为了+1之后默认是0，执行第一个controller
 	}
 }
 
@@ -93,4 +96,20 @@ func (c *Context) Json(status int, data interface{}) {
 	}
 
 	c.writer.Write(buf)
+}
+
+// 设置controllers
+func (c *Context) SetControllers(controller []Controller) {
+	c.controllers = controller
+}
+
+// 获取下一个controller
+func (c *Context) Next() {
+	c.index++
+	if c.index < len(c.controllers) {
+		controller := c.controllers[c.index]
+		if controller != nil {
+			controller(c)
+		}
+	}
 }

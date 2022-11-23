@@ -15,10 +15,10 @@ func NewTree() *Tree {
 }
 
 type Node struct {
-	isLast     bool       // 是否是最后一个节点
-	controller Controller // 控制器
-	segment    string     // 段字符串
-	children   []*Node    // 子节点
+	isLast      bool         // 是否是最后一个节点
+	controllers []Controller // 控制器
+	segment     string       // 段字符串
+	children    []*Node      // 子节点
 }
 
 // 是否是通配符
@@ -92,7 +92,7 @@ func (n *Node) filterChildNodes(segment string) []*Node {
 // /user/:id
 // /users/list
 // /user/list
-func (t *Tree) AddRouter(router string, controller Controller) error {
+func (t *Tree) AddRouter(router string, controllers ...Controller) error {
 	n := t.root
 	if n.matchNode(router) != nil {
 		return errors.New(fmt.Sprintf("exist router: %v", router))
@@ -122,7 +122,7 @@ func (t *Tree) AddRouter(router string, controller Controller) error {
 			segmentNode = &Node{segment: segment}
 			if isLast {
 				segmentNode.isLast = isLast
-				segmentNode.controller = controller
+				segmentNode.controllers = controllers
 			}
 			n.children = append(n.children, segmentNode)
 		}
@@ -135,10 +135,10 @@ func (t *Tree) AddRouter(router string, controller Controller) error {
 }
 
 // 查找controller
-func (t *Tree) FindController(router string) Controller {
+func (t *Tree) FindController(router string) []Controller {
 	matchNode := t.root.matchNode(router)
 	if matchNode == nil {
 		return nil
 	}
-	return matchNode.controller
+	return matchNode.controllers
 }
