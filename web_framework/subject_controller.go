@@ -19,7 +19,8 @@ func SubjectUpdateController(c *framework.Context) {
 }
 
 func SubjectGetController(c *framework.Context) {
-	c.Json(200, "ok, SubjectGetController")
+	id := c.Param("id")
+	c.Json(200, "ok, SubjectGetController == "+id.(string))
 }
 
 func SubjectNameController(c *framework.Context) {

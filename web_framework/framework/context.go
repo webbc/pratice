@@ -12,8 +12,9 @@ type Context struct {
 	writer      http.ResponseWriter
 	req         *http.Request
 	ctx         context.Context
-	controllers []Controller // controllers
-	index       int          // 当前处理到了那个handler
+	controllers []Controller           // controllers
+	index       int                    // 当前处理到了那个handler
+	params      map[string]interface{} // 路由参数
 }
 
 func NewContext(writer http.ResponseWriter, req *http.Request) *Context {
@@ -82,6 +83,15 @@ func (c *Context) QueryArray(key string, def []string) []string {
 		return vals
 	}
 	return def
+}
+
+// params
+func (c *Context) Param(key string) interface{} {
+	return c.params[key]
+}
+
+func (c *Context) SetParam(params map[string]interface{}) {
+	c.params = params
 }
 
 // writer

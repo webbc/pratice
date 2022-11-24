@@ -19,6 +19,7 @@ type Node struct {
 	controllers []Controller // 控制器
 	segment     string       // 段字符串
 	children    []*Node      // 子节点
+	parent      *Node        // 父节点
 }
 
 // 是否是通配符
@@ -124,6 +125,7 @@ func (t *Tree) AddRouter(router string, controllers ...Controller) error {
 				segmentNode.isLast = isLast
 				segmentNode.controllers = controllers
 			}
+			segmentNode.parent = n
 			n.children = append(n.children, segmentNode)
 		}
 
@@ -134,11 +136,16 @@ func (t *Tree) AddRouter(router string, controllers ...Controller) error {
 	return nil
 }
 
-// 查找controller
-func (t *Tree) FindController(router string) []Controller {
-	matchNode := t.root.matchNode(router)
-	if matchNode == nil {
-		return nil
+// 解析路由参数
+func (t *Tree) ParseParam(uri string, n *Node) map[string]interface{} {
+	params := make(map[string]interface{})
+	segments := strings.Split(uri, "/")
+	curNode := n
+	for i := len(segments) - 1; i >= 0; i-- {
+		if isWildSegment(curNode.segment) {
+			params[curNode.segment[1:]] = segments[i]
+		}
+		curNode = n.parent
 	}
-	return matchNode.controllers
+	return params
 }
