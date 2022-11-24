@@ -1,6 +1,9 @@
 package main
 
-import "pratice/web_framework/framework"
+import (
+	"pratice/web_framework/framework"
+	"time"
+)
 
 func SubjectAddController(c *framework.Context) {
 	c.Json(200, "ok, SubjectAddController")
@@ -19,6 +22,7 @@ func SubjectUpdateController(c *framework.Context) {
 }
 
 func SubjectGetController(c *framework.Context) {
+	time.Sleep(time.Second * 10)
 	id := c.Param("id")
 	c.Json(200, "ok, SubjectGetController == "+id.(string))
 }
