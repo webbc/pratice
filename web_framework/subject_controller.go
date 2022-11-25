@@ -1,32 +1,28 @@
 package main
 
 import (
-	"pratice/web_framework/framework"
+	"pratice/web_framework/framework/gin"
 	"time"
 )
 
-func SubjectAddController(c *framework.Context) {
-	c.Json(200, "ok, SubjectAddController")
+func SubjectListController(c *gin.Context) {
+	c.JSON(200, "ok, SubjectListController")
 }
 
-func SubjectListController(c *framework.Context) {
-	c.Json(200, "ok, SubjectListController")
+func SubjectDelController(c *gin.Context) {
+	c.JSON(200, "ok, SubjectDelController")
 }
 
-func SubjectDelController(c *framework.Context) {
-	c.Json(200, "ok, SubjectDelController")
+func SubjectUpdateController(c *gin.Context) {
+	c.JSON(200, "ok, SubjectUpdateController")
 }
 
-func SubjectUpdateController(c *framework.Context) {
-	c.Json(200, "ok, SubjectUpdateController")
-}
-
-func SubjectGetController(c *framework.Context) {
+func SubjectGetController(c *gin.Context) {
 	time.Sleep(time.Second * 10)
 	id := c.Param("id")
-	c.Json(200, "ok, SubjectGetController == "+id.(string))
+	c.JSON(200, "ok, SubjectGetController == "+id)
 }
 
-func SubjectNameController(c *framework.Context) {
-	c.Json(200, "ok, SubjectNameController")
+func SubjectNameController(c *gin.Context) {
+	c.JSON(200, "ok, SubjectNameController")
 }

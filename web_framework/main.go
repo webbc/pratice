@@ -6,13 +6,16 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"pratice/web_framework/framework"
+	"pratice/web_framework/framework/gin"
 	"syscall"
 	"time"
 )
 
 func main() {
-	core := framework.NewCore()
+	//core := framework.NewCore()
+
+	core := gin.New()
+
 	registerRouter(core)
 	server := &http.Server{Addr: ":9999", Handler: core}
 

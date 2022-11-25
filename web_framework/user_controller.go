@@ -1,9 +1,7 @@
 package main
 
-import (
-	"pratice/web_framework/framework"
-)
+import "pratice/web_framework/framework/gin"
 
-func UserLoginController(c *framework.Context) {
-	c.Json(200, "ok, UserLoginController")
+func UserLoginController(c *gin.Context) {
+	c.JSON(200, "ok, UserLoginController")
 }
