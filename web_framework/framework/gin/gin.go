@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"pratice/web_framework/framework"
 	"strings"
 	"sync"
 
@@ -78,6 +79,9 @@ const (
 // Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
 // Create an instance of Engine, by using New() or Default()
 type Engine struct {
+	// 容器
+	container framework.Container
+
 	RouterGroup
 
 	// RedirectTrailingSlash enables automatic redirection if the current route can't be matched but a
@@ -179,6 +183,7 @@ var _ IRouter = (*Engine)(nil)
 func New() *Engine {
 	debugPrintWARNINGNew()
 	engine := &Engine{
+		container: framework.NewHadeContainer(),
 		RouterGroup: RouterGroup{
 			Handlers: nil,
 			basePath: "/",
@@ -228,7 +233,7 @@ func (engine *Engine) Handler() http.Handler {
 func (engine *Engine) allocateContext(maxParams uint16) *Context {
 	v := make(Params, 0, maxParams)
 	skippedNodes := make([]skippedNode, 0, engine.maxSections)
-	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes, container: engine.container}
 }
 
 // Delims sets template left and right delims and returns an Engine instance.
