@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"pratice/web_framework/app/provider/demo"
 	"pratice/web_framework/framework/gin"
-	"pratice/web_framework/provider/demo"
 	"syscall"
 	"time"
 )

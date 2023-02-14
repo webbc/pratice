@@ -1,8 +1,8 @@
 package main
 
 import (
+	"pratice/web_framework/app/provider/demo"
 	"pratice/web_framework/framework/gin"
-	"pratice/web_framework/provider/demo"
 )
 
 func SubjectListController(c *gin.Context) {
