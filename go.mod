@@ -20,8 +20,14 @@ require (
 )
 
 require (
+	github.com/BurntSushi/toml v0.3.1
+	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gin-gonic/gin v1.8.1
+	github.com/go-sql-driver/mysql v1.7.0
+	github.com/google/wire v0.5.0
+	github.com/robfig/cron/v3 v3.0.0
 	github.com/spf13/cast v1.3.0
+	github.com/spf13/cobra v1.6.1
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
@@ -40,8 +46,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/robfig/cron/v3 v3.0.0 // indirect
-	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.3 // indirect
@@ -51,7 +55,7 @@ require (
 	go.uber.org/zap v1.17.0 // indirect
 	golang.org/x/arch v0.0.0-20220412001346-fc48f9fe4c15 // indirect
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
+	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
 	google.golang.org/grpc v1.38.0 // indirect
