@@ -2,7 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"github.com/getsentry/sentry-go"
 	"os"
+	"time"
 
 	"helloworld/internal/conf"
 
@@ -13,7 +16,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -73,6 +75,14 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+
+	if err := sentry.Init(sentry.ClientOptions{
+		Dsn:              "https://3c378c316da345d85a814f0b1a357ab1@o4506064764534784.ingest.sentry.io/4506065078124544",
+		AttachStacktrace: true,
+	}); err != nil {
+		panic(fmt.Sprintf("Sentry initialization failed: err:%v", err))
+	}
+	defer sentry.Flush(2 * time.Second)
 
 	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
 	if err != nil {

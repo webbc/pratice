@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"math/rand"
 
 	v1 "helloworld/api/helloworld/v1"
 	"helloworld/internal/biz"
@@ -25,5 +26,11 @@ func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1
 	if err != nil {
 		return nil, err
 	}
+
+	a := rand.Intn(2)
+	if a == 0 {
+		panic("111111")
+	}
+
 	return &v1.HelloReply{Message: "Hello " + g.Hello}, nil
 }
