@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  prometheus:
+    image: bitnami/prometheus:latest
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+      - ./test:/opt/bitnami/prometheus/test
+
+  node-exporter:
+    image: bitnami/node-exporter:latest
+    restart: always
+    ports:
+      - 9100:9100
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - 3000:3000
