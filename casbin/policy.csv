@@ -1,0 +1,8 @@
+p, admin, /*, *
+p, anonymous, /article, GET
+p, anonymous, /article/*, GET
+p, member, /permission, GET
+p, member, /article, GET
+p, member, /article/*, *
+g, test01, anonymous
+g, user01, member
